@@ -48,7 +48,8 @@ def test_make_msg_from_img():
 
 def test_file_to_pil():
     input_file = "test_small_file.txt"
-    expected = b"Hello World\n"
+    expected = b"Hello World"
+    # we strip "\n" because windows adds "\r\n"
 
     imgmsg = ImgMsg(input_file=input_file)
     imgmsg.loadInputFile()
@@ -57,7 +58,7 @@ def test_file_to_pil():
     imgmsg.buildMsg()
     msg = imgmsg.getMsg()
 
-    assert expected == msg
+    assert expected == msg.rstrip()
 
 
 def test_large_file_to_pil():
