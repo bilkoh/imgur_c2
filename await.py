@@ -1,7 +1,13 @@
 import requests
 import json
+from imgur_c2.auth import client_id
 
-url = "https://api.imgur.com/post/v1/posts/t/a8a15930df81?client_id=3ce591f6a7c61b2&filter%5Bwindow%5D=week&include=adtiles%2Cadconfig%2Ccover&page=1&sort=-viral"
+
+url = (
+    "https://api.imgur.com/post/v1/posts/t/a8a15930df81?client_id="
+    + client_id
+    + "&filter%5Bwindow%5D=week&include=adtiles%2Cadconfig%2Ccover&page=1&sort=-viral"
+)
 res = requests.get(url).content
 print(res)
 print("=====")
