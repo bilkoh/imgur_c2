@@ -1,9 +1,8 @@
-from dateutil import tz
 from datetime import datetime
 
 
 def generate_tag_name():
-    d = datetime.now(tz=tz.gettz("Europe/London"))
+    d = datetime.utcnow()
     (year, month, day) = (d.year, d.month, d.day)
     tag = ""
 
