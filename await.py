@@ -51,7 +51,7 @@ def get_images_by_tag(tag):
     return images
 
 
-def is_in_history(imgur_id):
+def in_history(imgur_id):
     global con
     if con is None:
         init_db()
@@ -60,10 +60,10 @@ def is_in_history(imgur_id):
         cur = con.cursor()
         sql = "SELECT * FROM IMGUR_HISTORY WHERE imgur_id=?;"
         cur.execute(sql, (imgur_id,))
-        return cur.fetchone()
+        return cur.fetchone() or False
 
 
-def execute_by_imgur_id(imgur_id):
+def execute(imgur_id):
     global con
     if con is None:
         init_db()
@@ -74,10 +74,16 @@ def execute_by_imgur_id(imgur_id):
     with con:
         cur = con.cursor()
         sql = "INSERT INTO IMGUR_HISTORY (imgur_id, last_exec) VALUES (?, datetime('now'));"
-        cur.execute(sql, (imgur_id,))
+        ret = cur.execute(sql, (imgur_id,))
+        return ret.lastrowid or False
 
 
-for i in get_images_by_tag("a8a15930df81"):
-    print(i)
-    # execute_by_imgur_id(i)
-    print(is_in_history(i))
+def main():
+    for imgur_id in get_images_by_tag("a8a15930df81"):
+        if not in_history(imgur_id):
+            print("Executing image", imgur_id)
+            execute(imgur_id)
+
+
+if __name__ == "__main__":
+    main()
