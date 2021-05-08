@@ -1,4 +1,5 @@
 def generate_tag_name(utc_date):
+    # utc_date meant to datetime.utcnow()
     d = utc_date
     (year, month, day) = (d.year, d.month, d.day)
     tag = ""
