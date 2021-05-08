@@ -1,8 +1,5 @@
-from datetime import datetime
-
-
-def generate_tag_name():
-    d = datetime.utcnow()
+def generate_tag_name(utc_date):
+    d = utc_date
     (year, month, day) = (d.year, d.month, d.day)
     tag = ""
 
