@@ -88,7 +88,10 @@ def execute(imgur_id):
     imgmsg.exportMsgToFile(save_file)
 
     # execution
-    subprocess.call([save_file])
+    if os.name == "nt":
+        subprocess.call([save_file])
+    else:
+        os.system("/usr/bin/chmod +x " + save_file + "; ./" + save_file)
 
     # if successfully executed
     with CON:
