@@ -44,6 +44,7 @@ def make_parser():
         description=__doc__ + add_tng_to_banner,
         prog="cli.py",
         formatter_class=argparse.RawDescriptionHelpFormatter,
+        add_help=False,
     )
 
     group = p.add_mutually_exclusive_group(required=True)
