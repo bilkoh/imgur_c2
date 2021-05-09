@@ -1,24 +1,25 @@
 """
-██╗███╗   ███╗ ██████╗ ██╗   ██╗██████╗ 
-██║████╗ ████║██╔════╝ ██║   ██║██╔══██╗
-██║██╔████╔██║██║  ███╗██║   ██║██████╔╝
-██║██║╚██╔╝██║██║   ██║██║   ██║██╔══██╗
-██║██║ ╚═╝ ██║╚██████╔╝╚██████╔╝██║  ██║
-╚═╝╚═╝     ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝
-             ██████╗██████╗                         
-             ██╔════╝╚════██╗                        
-             ██║      █████╔╝                        
-             ██║     ██╔═══╝                         
-             ╚██████╗███████╗                        
-             ╚═════╝╚══════╝                        
+    ██╗███╗   ███╗ ██████╗ ██╗   ██╗██████╗ 
+    ██║████╗ ████║██╔════╝ ██║   ██║██╔══██╗
+    ██║██╔████╔██║██║  ███╗██║   ██║██████╔╝
+    ██║██║╚██╔╝██║██║   ██║██║   ██║██╔══██╗
+    ██║██║ ╚═╝ ██║╚██████╔╝╚██████╔╝██║  ██║
+    ╚═╝╚═╝     ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+                ██████╗██████╗
+                ██╔════╝╚════██╗
+                ██║      █████╔╝
+                ██║     ██╔═══╝
+                ╚██████╗███████╗
+                ╚═════╝╚══════╝
 
    
 Examples:
     Step 1) Convert a binary to an image:
         $ python3 cli.py -b evil.exe -o not_evil.png
-    Step 2) Upload image under this generated tag. See:
+    Step 2) Upload image under this generated tag. (You will do this manually.) 
+    Run to find valid tag:
         $ python3 cli.py -t
-    Step 3) Though bots watch tag for new uploads. 
+    Step 3) Though bot watches tag for new uploads. 
             You can test an image by converting an image back to a binary:
         $ python3 cli.py -i not_evil.png -o evil.exe
 
